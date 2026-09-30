@@ -1,0 +1,16 @@
+﻿@model User
+
+@{
+    ViewData["^Kalorientagebuch Nutzer"] = "User";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Nutzer anlegen</h1>
+    <form method="post">
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" name="name" value="@Model.Name" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Senden</button>
+     </form>
+</div>
