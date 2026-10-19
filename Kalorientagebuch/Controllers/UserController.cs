@@ -1,6 +1,7 @@
 ﻿using Kalorientagebuch.Data;
 using Kalorientagebuch.Models;
 using Kalorientagebuch.Viewmodels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Kalorientagebuch.Controllers
@@ -8,16 +9,17 @@ namespace Kalorientagebuch.Controllers
     public class UserController : Controller
     {
         private readonly KalorientagebuchDbContext _context;
-        public UserController(KalorientagebuchDbContext context)
+
+        private readonly IPasswordHasher<User> _passwordHasher;
+        public UserController(KalorientagebuchDbContext context, IPasswordHasher<User> passwordHasher)
         {
             _context = context;
+            _passwordHasher = passwordHasher;
         }
 
         [HttpGet]
         public IActionResult Index()
         {
-           //var allUsers = _context.Users.ToList();
-
             return View();
         }
 
@@ -34,9 +36,10 @@ namespace Kalorientagebuch.Controllers
                 Birthday = userViewmodel.Birthday,
                 Height = userViewmodel.Height,
                 Name = userViewmodel.Name,
-                PasswordHash = userViewmodel.Password,
+                //PasswordHash = userViewmodel.Password,
                 Weight = userViewmodel.Weight
             };
+            user.PasswordHash = _passwordHasher.HashPassword(user, userViewmodel.Password);
 
             _context.Users.Add(user);
             _context.SaveChanges();

@@ -9,7 +9,7 @@ namespace Kalorientagebuch.Models
         [MaxLength(25)]
         public string Name { get; set; }
 
-        [MaxLength(25)]
+        [MaxLength(255)]
         public string PasswordHash { get; set; }
 
         public DateOnly Birthday { get; set; }
