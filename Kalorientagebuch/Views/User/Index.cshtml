@@ -1,16 +1,55 @@
-﻿@model User
+﻿@model Kalorientagebuch.Viewmodels.UserViewmodel
 
 @{
-    ViewData["^Kalorientagebuch Nutzer"] = "User";
+    ViewData["Kalorientagebuch Nutzer"] = "User";
 }
 
-<div class="text-center">
+<div>
     <h1 class="display-4">Nutzer anlegen</h1>
     <form method="post">
-        <div class="form-group">
-            <label for="name">Name</label>
-            <input type="text" class="form-control" id="name" name="name" value="@Model.Name" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Senden</button>
-     </form>
+        <table>
+            <tr>
+                <td><label asp-for="Name"></label></td>
+                <td><input asp-for="Name"><span asp-validation-for="Name" class="text-danger"></span></td>
+            </tr>
+            <tr>
+                <td><label asp-for="Birthday"></label></td>
+                <td><input asp-for="Birthday" type="date" max="@DateTime.Now.ToString("yyyy-MM-dd")"></td>
+            </tr>
+            <tr>
+                <td><label asp-for="Password"></label></td>
+                <td><input asp-for="Password" type="password"></td>
+            </tr>
+            <tr>
+                <td><label asp-for="Weight"></label></td>
+                <td><input asp-for="Weight" type="number" step="0.01"></td>
+            </tr>
+            <tr>
+                <td><label asp-for="Height"></label></td>
+                <td><input asp-for="Height" type="number" step="0.01"></td>
+            </tr>
+            <tr>
+                <td>Geschlecht</td>
+                <td>
+                    <select name="sex">
+                        <option />
+                        <option value="male">Mann</option>
+                        <option value="female">Frau</option>
+                        <option value="other">andere*</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Nutzungsbedingungen akzeptieren</td>
+                <td><input type="checkbox" required></td>
+            </tr>
+        </table>
+        <button type="submit" class="btn btn-primary">Registrierung abschliessen</button>
+    </form>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

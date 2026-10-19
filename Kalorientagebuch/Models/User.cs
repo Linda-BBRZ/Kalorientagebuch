@@ -1,10 +1,22 @@
-﻿namespace Kalorientagebuch.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Kalorientagebuch.Models
 {
     public class User
     {
         public int Id { get; set; }
 
+        [MaxLength(25)]
         public string Name { get; set; }
+
+        [MaxLength(25)]
+        public string PasswordHash { get; set; }
+
+        public DateOnly Birthday { get; set; }
+
+        public double Weight { get; set; }
+
+        public double Height { get; set; }
 
         public  List<Entry> Entries { get; set; } = new List<Entry>();
 

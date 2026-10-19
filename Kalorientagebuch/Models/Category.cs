@@ -1,10 +1,13 @@
-﻿namespace Kalorientagebuch.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Kalorientagebuch.Models
 {
     public class Category
     {
         public int Id { get; set; }
 
-        public string Caption { get; set; }
+        [MaxLength(50)]
+        public string? Caption { get; set; }
 
         public int CategoryTypeId { get; set; }
 

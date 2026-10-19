@@ -8,11 +8,9 @@ builder.Services.AddEndpointsApiExplorer();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-//builder.Services.AddDbContext<KalorientagebuchDbContext>(options =>
-//    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
 builder.Services.AddDbContext<KalorientagebuchDbContext>(options =>
-    options.UseInMemoryDatabase("Kalorientagebuch"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 
 
 var app = builder.Build();

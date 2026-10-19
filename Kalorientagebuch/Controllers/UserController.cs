@@ -1,5 +1,6 @@
 ﻿using Kalorientagebuch.Data;
 using Kalorientagebuch.Models;
+using Kalorientagebuch.Viewmodels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Kalorientagebuch.Controllers
@@ -15,19 +16,32 @@ namespace Kalorientagebuch.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-           
+           //var allUsers = _context.Users.ToList();
 
-            return View(new User());
+            return View();
         }
 
         [HttpPost]
-        public IActionResult Index(User user)
+        public IActionResult Index(UserViewmodel userViewmodel)
         {
-            
+            if(!ModelState.IsValid)   
+            {
+                return View(userViewmodel);
+            }
+
+            var user = new User
+            {
+                Birthday = userViewmodel.Birthday,
+                Height = userViewmodel.Height,
+                Name = userViewmodel.Name,
+                PasswordHash = userViewmodel.Password,
+                Weight = userViewmodel.Weight
+            };
+
             _context.Users.Add(user);
             _context.SaveChanges();
 
-            return View();
+            return RedirectToAction("Index", "Home");
         }
     }
 }
