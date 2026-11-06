@@ -24,10 +24,20 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Create">Nutzer anlegen</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">User</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Users</a>
+                        </li>
+                        <li>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <label>Willkommen, @User.Identity.Name</label>
+                                <a class="btn btn-primary" type="submit" asp-area="" asp-controller="User" asp-action="Logout">Logout</a>
+                            } else {
+
+                            <a class="btn btn-primary" asp-area="" asp-controller="User" asp-action="Login">Login</a>
+                            }  
                         </li>
                     </ul>
                 </div>

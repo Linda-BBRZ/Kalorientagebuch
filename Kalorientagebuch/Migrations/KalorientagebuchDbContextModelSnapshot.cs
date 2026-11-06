@@ -17,7 +17,7 @@ namespace Kalorientagebuch.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.13")
+                .HasAnnotation("ProductVersion", "10.0.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -105,8 +105,12 @@ namespace Kalorientagebuch.Migrations
                     b.Property<DateOnly>("Birthday")
                         .HasColumnType("date");
 
-                    b.Property<double>("Height")
-                        .HasColumnType("float");
+                    b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Height")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -117,6 +121,9 @@ namespace Kalorientagebuch.Migrations
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
+
+                    b.Property<byte[]>("Picture")
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<double>("Weight")
                         .HasColumnType("float");

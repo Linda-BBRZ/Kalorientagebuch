@@ -23,10 +23,13 @@ namespace Kalorientagebuch.Viewmodels
         [Range(0, 1000)]
         public double Weight { get; set; }
 
-        [Display(Name = "Größe in m:")]
-        [Range(0, 25)]
-        public double Height { get; set; }
+        [Display(Name = "Größe in cm:")]
+        [Range(0, 1000)]
+        public int Height { get; set; }
+        
+        [Display(Name = "Geschlecht:")]
+        public string Gender { get; set; }
 
-
+        public IFormFile? PictureFile { get; set; }
     }
 }

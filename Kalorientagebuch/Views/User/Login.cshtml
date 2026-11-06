@@ -1,0 +1,43 @@
+﻿@model Kalorientagebuch.Viewmodels.LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+}	
+<div class="row justify-content-center mt-5">
+	<div class="col-md-5 col-lg-4">
+		<!-- Card für das Login-Formular -->
+		<div class="card shadow-sm">
+			<div class="card-body">
+				<h3 class="card-title text-center mb-4">Login</h3>
+
+				<!-- Validierungs-Summary -->
+				<div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+				<form asp-action="Login" asp-controller="User">
+					<div class="mb-3">
+						<label asp-for="Name" class="form-label"></label>
+						<input asp-for="Name" class="form-control" placeholder="Benutzername" />
+						<span asp-validation-for="Name" class="text-danger"></span>
+					</div>
+
+					<div class="mb-3">
+						<label asp-for="Password" class="form-label"></label>
+						<input asp-for="Password" type="password" class="form-control" placeholder="Passwort" />
+						<span asp-validation-for="Password" class="text-danger"></span>
+					</div>
+
+					<div class="d-grid">
+						<!-- Volle Breite Button -->
+						<button type="submit" class="btn btn-primary btn-block">Login</button>
+					</div>
+				</form>
+			</div>
+			<div class="card-footer text-center text-muted small">
+				<a asp-action="Create" asp-controller="User">Registrieren</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section Scripts {
+	@await Html.PartialAsync("_ValidationScriptsPartial")
+}

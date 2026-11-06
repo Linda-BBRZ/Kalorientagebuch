@@ -16,7 +16,11 @@ namespace Kalorientagebuch.Models
 
         public double Weight { get; set; }
 
-        public double Height { get; set; }
+        public int Height { get; set; }
+
+        public string Gender { get; set; }
+
+        public byte[]? Picture { get; set; }
 
         public  List<Entry> Entries { get; set; } = new List<Entry>();
 
