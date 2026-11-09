@@ -24,6 +24,15 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="CategoryTyp" asp-action="Index">Kategorietypen</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Category" asp-action="Index">Kategorien</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Entry" asp-action="Index">Einträge</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Create">Nutzer anlegen</a>
                         </li>
                         <li class="nav-item">
@@ -32,6 +41,9 @@
                         <li>
                             @if (User.Identity.IsAuthenticated)
                             {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Entry" asp-action="Create">Eintrag anlegen</a>
+                                </li>
                                 <label>Willkommen, @User.Identity.Name</label>
                                 <a class="btn btn-primary" type="submit" asp-area="" asp-controller="User" asp-action="Logout">Logout</a>
                             } else {

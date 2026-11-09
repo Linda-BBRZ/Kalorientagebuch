@@ -11,8 +11,8 @@ namespace Kalorientagebuch.Models
 
         public int CategoryTypeId { get; set; }
 
-        public CategoryTyp CategoryType { get; set; }
+        public CategoryTyp? CategoryType { get; set; }
 
-        public List<Entry> Entries { get; set; } = new List<Entry>();
+        public List<Entry>? Entries { get; set; } = new List<Entry>();
     }
 }

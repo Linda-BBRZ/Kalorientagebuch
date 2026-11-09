@@ -1,7 +1,8 @@
 ﻿using Kalorientagebuch.Models;
+using Kalorientagebuch.Viewmodels;
 using Microsoft.AspNetCore.Identity;
 
-namespace Kalorientagebuch.Viewmodels
+namespace Kalorientagebuch.Mapper
 {
     public class UserMapper
     {
@@ -16,6 +17,8 @@ namespace Kalorientagebuch.Viewmodels
                 Weight = user.Weight,
                 Height = user.Height,
                 Gender = user.Gender,
+                //ActivityLevel = user.ActivityLevel,
+                ActivityLevelId = user.ActivityLevelId,
                 Password = user.PasswordHash
             };
         }
@@ -28,7 +31,9 @@ namespace Kalorientagebuch.Viewmodels
                 Birthday = viewmodel.Birthday,
                 Weight = viewmodel.Weight,
                 Height = viewmodel.Height,
-                Gender = viewmodel.Gender
+                Gender = viewmodel.Gender,
+                //ActivityLevel = viewmodel.ActivityLevel,
+                ActivityLevelId = viewmodel.ActivityLevelId,
             };
         }
 
@@ -39,6 +44,8 @@ namespace Kalorientagebuch.Viewmodels
             user.Weight = viewmodel.Weight;
             user.Height = viewmodel.Height;
             user.Gender = viewmodel.Gender;
+            //user.ActivityLevel = viewmodel.ActivityLevel;
+            user.ActivityLevelId = viewmodel.ActivityLevelId;
             if (!string.IsNullOrEmpty(viewmodel.Password))
             {
                 user.PasswordHash = passwordHasher.HashPassword(user, viewmodel.Password);

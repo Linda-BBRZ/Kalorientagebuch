@@ -22,6 +22,26 @@ namespace Kalorientagebuch.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Kalorientagebuch.Models.ActivityLevel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Caption")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Factor")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ActivityLevels");
+                });
+
             modelBuilder.Entity("Kalorientagebuch.Models.Category", b =>
                 {
                     b.Property<int>("Id")
@@ -102,6 +122,9 @@ namespace Kalorientagebuch.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("ActivityLevelId")
+                        .HasColumnType("int");
+
                     b.Property<DateOnly>("Birthday")
                         .HasColumnType("date");
 
@@ -129,6 +152,8 @@ namespace Kalorientagebuch.Migrations
                         .HasColumnType("float");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ActivityLevelId");
 
                     b.ToTable("Users");
                 });
@@ -161,6 +186,20 @@ namespace Kalorientagebuch.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Kalorientagebuch.Models.User", b =>
+                {
+                    b.HasOne("Kalorientagebuch.Models.ActivityLevel", "ActivityLevel")
+                        .WithMany("Users")
+                        .HasForeignKey("ActivityLevelId");
+
+                    b.Navigation("ActivityLevel");
+                });
+
+            modelBuilder.Entity("Kalorientagebuch.Models.ActivityLevel", b =>
+                {
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("Kalorientagebuch.Models.Category", b =>

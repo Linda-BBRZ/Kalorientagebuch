@@ -2,6 +2,7 @@
 @{
     ViewData["Kalorientagebuch Nutzer"] = "User";
 }
+
 <div>
     <h1 class="display-4">Nutzer bearbeiten</h1>
     <form method="post" enctype="multipart/form-data">
@@ -41,6 +42,19 @@
                         <option value="other">andere*</option>
                     </select>
                     <span asp-validation-for="Gender" class="text-danger"></span>
+                </td>
+            </tr>
+            <tr>
+                <td><label asp-for="ActivityLevelId"></label></td>
+                <td>
+                    <select asp-for="ActivityLevelId" class="form-control">
+                        <option value="">-- Aktivitätslevel auswählen --</option>
+                        @foreach (var activityLevel in (List<ActivityLevel>)ViewData["ActivityLevels"])
+                        {
+                            <option value="@activityLevel.Id">@activityLevel.Caption</option>
+                        }
+                    </select>
+                    <span asp-validation-for="ActivityLevelId" class="text-danger"></span>
                 </td>
             </tr>
             <tr>

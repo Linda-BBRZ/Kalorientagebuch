@@ -1,0 +1,40 @@
+﻿@model List<Kalorientagebuch.Viewmodels.EntryViewModel>
+
+
+<div>
+    <h1 class="display-4">Einträge Übersicht</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Date</th>
+                <th>Description</th>
+                <th>CaloriesAmount</th>
+                <th>UserId</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var entry in Model)
+            {
+                <tr>
+                    <td>@entry.Id</td>
+                    <td>@entry.Date.ToString("yyyy-MM-dd")</td>
+                    <td>@entry.Description</td>
+                    <td>@entry.CaloriesAmount</td>
+                    <td>@entry.UserId</td>
+                    <td><a asp-action="Details" asp-route-id="@entry.Id">Details</a></td>
+                    <td><a asp-action="Edit" asp-route-id="@entry.Id">Edit</a></td>
+                    <td><a asp-action="Delete" asp-route-id="@entry.Id" onclick="return confirm('Are you sure you want to delete this enry?')">Delete</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

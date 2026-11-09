@@ -24,6 +24,10 @@ namespace Kalorientagebuch.Models
 
         public  List<Entry> Entries { get; set; } = new List<Entry>();
 
+        public ActivityLevel? ActivityLevel { get; set; }
+
+        public int? ActivityLevelId { get; set; }
+
         /* GRUNDUMSATZ BERECHNEN (vgl. https://www.omnicalculator.com/de/gesundheit/grundumsatz-harris-benedict-formel)
          * Für Männer: BMR = 66,5 + (13,75 × Gewicht in kg) + (5,003 × Größe in cm) - (6,75 × Alter)
          * Für Frauen: BMR = 655,1 + (9,563 × Gewicht in kg) + (1,850 × Körpergröße in cm) - (4,676 × Alter)

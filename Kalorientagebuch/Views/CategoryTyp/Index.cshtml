@@ -1,0 +1,25 @@
+﻿@model List<Kalorientagebuch.Viewmodels.CategoryTypViewModel>
+@{
+    ViewData["Kalorientagebuch Kategorientypen"] = "CategoryTyp";
+}
+
+<div>
+    <h1 class="display-4">Kategorientypen Übersicht</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Caption</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var categoryTyp in Model){
+                <tr>
+                    <td>@categoryTyp.Id</td>
+                    <td>@categoryTyp.Caption</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

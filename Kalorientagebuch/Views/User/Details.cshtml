@@ -45,6 +45,12 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Height)
         </dd>
+        <dt class="col-sm-2">
+            Berechneter Grundumsatz
+        </dt>
+        <dd class="col-sm-10">
+            @Model.calculatedTDEE
+        </dd>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |

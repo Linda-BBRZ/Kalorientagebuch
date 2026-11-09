@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Kalorientagebuch.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace Kalorientagebuch.Viewmodels
 {
@@ -30,6 +31,11 @@ namespace Kalorientagebuch.Viewmodels
         [Display(Name = "Geschlecht:")]
         public string Gender { get; set; }
 
+        public int? ActivityLevelId { get; set; }
+
         public IFormFile? PictureFile { get; set; }
+
+        public int calculatedTDEE { get; set; }
+
     }
 }
