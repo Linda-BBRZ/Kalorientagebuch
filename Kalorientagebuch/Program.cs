@@ -28,7 +28,6 @@ builder.Services.AddAuthentication("loginCookieAuth").AddCookie("loginCookieAuth
 });
 
 
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.     
@@ -40,17 +39,15 @@ app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Entry}/{action=Index}/{id?}")
-    .WithStaticAssets();
+    pattern: "{controller=Entry}/{action=Index}/{id?}");
 
 using var scope = app.Services.CreateScope();
 var dbContext = scope.ServiceProvider.GetRequiredService<KalorientagebuchDbContext>();
 
-if(dbContext.ActivityLevels.Count() ==0)
+if (dbContext.ActivityLevels.Count() == 0)
 {
     dbContext.AddRange(
         new ActivityLevel
