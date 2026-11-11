@@ -44,7 +44,7 @@ app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
+    pattern: "{controller=Entry}/{action=Index}/{id?}")
     .WithStaticAssets();
 
 using var scope = app.Services.CreateScope();
@@ -138,19 +138,23 @@ if (dbContext.Categories.Count() == 0)
     dbContext.AddRange(new Category
     {
         Caption = "Essen",
-        CategoryTypeId = dbContext.CategoryTyps.FirstOrDefault(ct => ct.Caption == "Kalorienaufnahme").Id
+        CategoryTypeId = dbContext.CategoryTyps.FirstOrDefault(ct => ct.Caption == "Kalorienaufnahme").Id,
+        Color = "FF0000" // Beispiel-Farbe für Essen"
     }, new Category
     {
         Caption = "Trinken",
-        CategoryTypeId = dbContext.CategoryTyps.FirstOrDefault(ct => ct.Caption == "Kalorienaufnahme").Id
+        CategoryTypeId = dbContext.CategoryTyps.FirstOrDefault(ct => ct.Caption == "Kalorienaufnahme").Id,
+        Color = "0000FF" // Beispiel-Farbe für Trinken"
     }, new Category
     {
         Caption = "Sport",
-        CategoryTypeId = dbContext.CategoryTyps.FirstOrDefault(ct => ct.Caption == "Kalorienverbrauch").Id
+        CategoryTypeId = dbContext.CategoryTyps.FirstOrDefault(ct => ct.Caption == "Kalorienverbrauch").Id,
+        Color = "00FF00" // Beispiel-Farbe für Sport"
     }, new Category
     {
         Caption = "Grundumsatz",
-        CategoryTypeId = dbContext.CategoryTyps.FirstOrDefault(ct => ct.Caption == "Kalorienverbrauch").Id
+        CategoryTypeId = dbContext.CategoryTyps.FirstOrDefault(ct => ct.Caption == "Kalorienverbrauch").Id,
+        Color = "FFFF00" // Beispiel-Farbe für Grundumsatz"
     });
     dbContext.SaveChanges();
 }

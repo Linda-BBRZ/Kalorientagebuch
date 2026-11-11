@@ -9,6 +9,9 @@ namespace Kalorientagebuch.Models
         [MaxLength(50)]
         public string? Caption { get; set; }
 
+        [MaxLength(6)]
+        public string? Color { get; set; }
+
         public int CategoryTypeId { get; set; }
 
         public CategoryTyp? CategoryType { get; set; }

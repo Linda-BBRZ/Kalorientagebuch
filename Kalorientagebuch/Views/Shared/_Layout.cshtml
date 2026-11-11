@@ -21,7 +21,7 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Entry" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="CategoryTyp" asp-action="Index">Kategorietypen</a>
@@ -30,29 +30,24 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Category" asp-action="Index">Kategorien</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Entry" asp-action="Index">Einträge</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Create">Nutzer anlegen</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Users</a>
                         </li>
-                        <li>
-                            @if (User.Identity.IsAuthenticated)
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Entry" asp-action="Create">Eintrag anlegen</a>
-                                </li>
-                                <label>Willkommen, @User.Identity.Name</label>
-                                <a class="btn btn-primary" type="submit" asp-area="" asp-controller="User" asp-action="Logout">Logout</a>
-                            } else {
-
-                            <a class="btn btn-primary" asp-area="" asp-controller="User" asp-action="Login">Login</a>
-                            }  
-                        </li>
                     </ul>
                 </div>
+            </div>
+            <div>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <label>Willkommen, @User.Identity.Name</label>
+                    <a class="btn btn-primary" type="submit" asp-area="" asp-controller="User" asp-action="Logout">Logout</a>
+                }
+                else
+                {
+                    <a class="btn btn-primary" asp-area="" asp-controller="User" asp-action="Login">Login</a>
+                }
             </div>
         </nav>
     </header>
@@ -64,7 +59,8 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2026 - Kalorientagebuch - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2026 - Kalorientagebuch - <a href="https://github.com/Linda-BBRZ/Kalorientagebuch"><i class="bi bi-github"></i>Sourcecode on GitHub</a>
+            
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

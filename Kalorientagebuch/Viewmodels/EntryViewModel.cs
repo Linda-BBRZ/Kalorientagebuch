@@ -8,6 +8,7 @@ namespace Kalorientagebuch.Viewmodels
         public int Id { get; set; }
 
         [Display(Name = "Beschreibung")]
+        [MaxLength(100)]
         public string? Description { get; set; }
 
         [Display(Name = "Datum")]
@@ -18,6 +19,8 @@ namespace Kalorientagebuch.Viewmodels
 
         [Display(Name = "Kategorie")]
         public int CategoryId { get; set; }
+
+        public CategoryViewModel? Category { get; set; }
 
         [Display(Name = "Nutzer")]
         public int UserId { get; set; }

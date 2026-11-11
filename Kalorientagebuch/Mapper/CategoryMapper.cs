@@ -5,12 +5,12 @@ namespace Kalorientagebuch.Mapper
 {
     public class CategoryMapper
     {
-        public static Category Map(CategoryViewModel categoryViewModel)
+        public static Category Map(CategoryCreateRequest request)
         {
             Category category = new Category();
-            category.Id = categoryViewModel.Id;
-            category.Caption = categoryViewModel.Caption;
-            category.CategoryTypeId = categoryViewModel.CategoryType.Id;
+            category.Caption = request.Caption;
+            category.CategoryTypeId = request.CategoryTypeId;
+            category.Color = request.Color?.TrimStart('#');
             return category;
         }
 
@@ -20,7 +20,8 @@ namespace Kalorientagebuch.Mapper
             {
                 Id = category.Id,
                 Caption = category.Caption,
-                CategoryType = getMappedCategoryTyp(category.CategoryTypeId)
+                CategoryTypeId = category.CategoryTypeId,
+                Color = "#" + category.Color
             };
             return categoryViewModel;
         }
@@ -29,18 +30,8 @@ namespace Kalorientagebuch.Mapper
         {
             category.Id = categoryViewModel.Id;
             category.Caption = categoryViewModel.Caption;
-            category.CategoryTypeId = categoryViewModel.CategoryType.Id;
+            category.CategoryTypeId = categoryViewModel.CategoryTypeId;
         }
-
-        private static CategoryTypViewModel getMappedCategoryTyp(int categoryTypId)
-        {
-            CategoryTypViewModel categoryTypViewModel = new CategoryTypViewModel();
-            categoryTypViewModel.Id = categoryTypId;
-            categoryTypViewModel.Caption = "WORKAROUND";
-
-            return categoryTypViewModel;
-        }
-
 
     }
 }

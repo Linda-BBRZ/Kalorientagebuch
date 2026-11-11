@@ -10,6 +10,11 @@ namespace Kalorientagebuch.Viewmodels
         [MinLength(3)]
         public string? Caption { get; set; }
 
-        public CategoryTypViewModel? CategoryType { get; set; }
+        [Display(Name = "Farbe")]
+        [MinLength(7)]
+        [MaxLength(7)]
+        public string? Color { get; set; }
+
+        public int CategoryTypeId { get; set; }
     }
 }

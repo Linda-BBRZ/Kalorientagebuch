@@ -28,7 +28,8 @@ namespace Kalorientagebuch.Mapper
                 Date = entry.Date,
                 CaloriesAmount = entry.CaloriesAmount,
                 UserId = entry.UserId,
-                CategoryId = entry.CategoryId
+                CategoryId = entry.CategoryId,
+                Category = CategoryMapper.Map(entry.Category)
             };
         }
 

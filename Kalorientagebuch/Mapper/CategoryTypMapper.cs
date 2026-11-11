@@ -5,12 +5,17 @@ namespace Kalorientagebuch.Mapper
 {
     public class CategoryTypMapper
     {
-        internal static CategoryTypViewModel Map(CategoryTyp? categoryType)
+        public static CategoryTypViewModel Map(CategoryTyp? categoryType)
         {
-            throw new NotImplementedException();
+            CategoryTypViewModel categoryTypViewModel = new CategoryTypViewModel
+            {
+                Id = categoryType?.Id ?? 0,
+                Caption = categoryType?.Caption
+            };
+            return categoryTypViewModel;
         }
 
-        public CategoryTyp Map(CategoryTypViewModel categoryTypViewModel)
+        public static CategoryTyp Map(CategoryTypViewModel categoryTypViewModel)
         {
             CategoryTyp categoryTyp = new CategoryTyp();
             categoryTyp.Id = categoryTypViewModel.Id;

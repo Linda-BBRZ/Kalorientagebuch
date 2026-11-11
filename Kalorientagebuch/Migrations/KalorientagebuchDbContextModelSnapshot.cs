@@ -57,6 +57,9 @@ namespace Kalorientagebuch.Migrations
                     b.Property<int>("CategoryTypeId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Color")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryTypeId");

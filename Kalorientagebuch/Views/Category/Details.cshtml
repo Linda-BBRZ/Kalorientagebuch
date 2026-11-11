@@ -1,0 +1,38 @@
+﻿@model Kalorientagebuch.Viewmodels.CategoryViewModel
+
+<div>
+    <h4>Kategorie - Details</h4>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Caption)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Caption)
+        </dd>
+    </dl>
+    <dl>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Color)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Color)
+        </dd>
+    </dl>
+    <dl>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CategoryTypeId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CategoryTypeId)
+        </dd>
+    </dl>
+    <dl>
+        <dt class="col-sm-2">
+
+        </dt>
+        <dd class="col-sm-10">
+            <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+            <a asp-action="Index">Back to List</a>
+        </dd>
+    </dl>
+</div>
