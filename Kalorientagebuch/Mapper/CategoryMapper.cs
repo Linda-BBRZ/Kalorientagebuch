@@ -31,6 +31,7 @@ namespace Kalorientagebuch.Mapper
             category.Id = categoryViewModel.Id;
             category.Caption = categoryViewModel.Caption;
             category.CategoryTypeId = categoryViewModel.CategoryTypeId;
+            category.Color = categoryViewModel.Color?.TrimStart('#');
         }
 
     }

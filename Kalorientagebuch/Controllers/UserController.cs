@@ -1,11 +1,14 @@
 ﻿using Kalorientagebuch.Data;
+using Kalorientagebuch.Interfaces;
 using Kalorientagebuch.Mapper;
 using Kalorientagebuch.Models;
+using Kalorientagebuch.Models.Requests;
+using Kalorientagebuch.Models.Responses;
 using Kalorientagebuch.Viewmodels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Reflection;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace Kalorientagebuch.Controllers
@@ -14,32 +17,39 @@ namespace Kalorientagebuch.Controllers
     {
         private readonly KalorientagebuchDbContext _context;
 
-        private readonly IPasswordHasher<User> _passwordHasher;
-        public UserController(KalorientagebuchDbContext context, IPasswordHasher<User> passwordHasher)
+        private readonly IPasswordHasher<Models.User> _passwordHasher;
+
+        private readonly IUserService _userService;
+        public UserController(KalorientagebuchDbContext context, IPasswordHasher<User> passwordHasher, IUserService userService)
         {
             _context = context;
             _passwordHasher = passwordHasher;
+            _userService = userService;
+
         }
 
         [HttpGet]
         public IActionResult Index()
         {
-            List<UserViewmodel> users = _context.Users.Select(u => UserMapper.Map(u)).ToList();
+            IndexUserViewModel indexUserViewModel = new IndexUserViewModel();
+            indexUserViewModel.Items = _context.Users.Select(u => UserMapper.Map(u)).ToList();
 
-            return View(users);
+            return View(indexUserViewModel);
         }
 
         [HttpGet]
         public async Task<IActionResult> Details(int? id)
         {
+            //var user = await _context.Users.Include(u => u.ActivityLevel).FindAsync(id);
             var user = await _context.Users.FindAsync(id);
             if (user == null)
             {
                 return NotFound();
             }
-            UserViewmodel userViewmodel = UserMapper.Map(user);
-            calculateTotalDailyEnergyExpenditure(userViewmodel);
-            return View(userViewmodel);
+            UserDetailResponse userDetailResponse = UserMapper.MapUserDetailResponse(user);
+            userDetailResponse.calculatedTDEE = _userService.CalculateTotalDailyEnergyExpenditure(user);
+            
+            return View(userDetailResponse);
         }
 
         [HttpGet]
@@ -59,33 +69,33 @@ namespace Kalorientagebuch.Controllers
                 return NotFound();
             }
 
-            UserViewmodel userViewmodel = UserMapper.Map(user);
-            return View(userViewmodel);
+            UserEditRequest userEditRequest = UserMapper.MapUserEditRequest(user);
+            return View(userEditRequest);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(UserViewmodel userViewmodel)
+        public async Task<IActionResult> Edit(UserEditRequest userEditRequest)
         {
             SetViewData();
-            if (userViewmodel.Id <= 0)
+            if (userEditRequest.Id <= 0)
             {
                 return NotFound();
             }
-            /*if(!ModelState.IsValid)
+            if(!ModelState.IsValid)
             {
-                return View(userViewmodel);
-            }*/
-            var user = await _context.Users.FindAsync(userViewmodel.Id);
+                return View(userEditRequest);
+            }
+            var user = await _context.Users.FindAsync(userEditRequest.Id);
             if (user == null)
             {
                 return NotFound();
             }
 
-            UserMapper.Map(user, userViewmodel, _passwordHasher);
-            if (userViewmodel.PictureFile != null && userViewmodel.PictureFile.Length > 0)
+            UserMapper.Map(user, userEditRequest);
+            if (userEditRequest.PictureFile != null && userEditRequest.PictureFile.Length > 0)
             {
                 using var memoryStream = new MemoryStream();
-                userViewmodel.PictureFile.CopyTo(memoryStream);
+                userEditRequest.PictureFile.CopyTo(memoryStream);
                 user.Picture = memoryStream.ToArray();
             }
             _context.Update(user);
@@ -114,21 +124,21 @@ namespace Kalorientagebuch.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(UserViewmodel userViewmodel)
+        public IActionResult Create(UserCreateRequest userCreateRequest)
         {
             SetViewData();
             if (!ModelState.IsValid)
             {
-                return View(userViewmodel);
+                return View(userCreateRequest);
             }
 
-            var user = UserMapper.Map(userViewmodel);
-            user.PasswordHash = _passwordHasher.HashPassword(user, userViewmodel.Password);
+            var user = UserMapper.Map(userCreateRequest);
+            user.PasswordHash = _passwordHasher.HashPassword(user, userCreateRequest.Password);
 
-            if (userViewmodel.PictureFile != null && userViewmodel.PictureFile.Length > 0)
+            if (userCreateRequest.PictureFile != null && userCreateRequest.PictureFile.Length > 0)
             {
                 using var memoryStream = new MemoryStream();
-                userViewmodel.PictureFile.CopyTo(memoryStream);
+                userCreateRequest.PictureFile.CopyTo(memoryStream);
                 user.Picture = memoryStream.ToArray();
             }
 
@@ -173,8 +183,7 @@ namespace Kalorientagebuch.Controllers
             {
                 return View(loginViewModel);
             }
-            //var user = await _context.Users.FirstOrDefaultAsync(u => u.Name == loginViewModel.Name);
-            //var user = await _context.Users.FindAsync(loginViewModel.Name);
+
             var user = _context.Users.FirstOrDefault(u => u.Name == loginViewModel.Name);
 
             if (user == null)
@@ -202,7 +211,7 @@ namespace Kalorientagebuch.Controllers
 
             await HttpContext.SignInAsync("loginCookieAuth", principal);
 
-            return RedirectToAction("Details", "User", UserMapper.Map(user));
+            return base.RedirectToAction("Details", "User", UserMapper.Map(user));
         }
 
         public async Task<IActionResult> Logout()
@@ -214,48 +223,6 @@ namespace Kalorientagebuch.Controllers
         public IActionResult AccessDenied()
         {
             return Content("Zugriff verweigert.");
-        }
-
-        public double CalculateBasalMetabolicRate(UserViewmodel userViewmodel)
-        {
-            double basalMetabolicRate = 0;
-            if (userViewmodel.Gender == "male")
-            {
-                // Für Männer: BMR = 66,5 + (13,75 × Gewicht in kg) + (5,003 × Größe in cm) - (6,75 × Alter)
-                basalMetabolicRate = 66.5 + (13.75 * userViewmodel.Weight) + (5.003 * userViewmodel.Height)
-                    - (6.755 * calculateAge(userViewmodel.Birthday));
-            }
-            else if (userViewmodel.Gender == "female")
-            {
-                // Für Frauen: BMR = 655,1 + (9, 563 × Gewicht in kg) +(1, 850 × Körpergröße in cm) -(4, 676 × Alter)
-                basalMetabolicRate = 655.1 + (9.563 * userViewmodel.Weight) + (1.850 * userViewmodel.Height)
-                    - (4.676 * calculateAge(userViewmodel.Birthday));
-            }
-            else
-            {
-                // Geschlecht unbekannt oder nicht angegeben, Standardwert verwenden
-                basalMetabolicRate = 0;
-            }
-            return basalMetabolicRate;
-        }
-
-        //TDEE (Total Daily Energy Expenditure)
-        public void calculateTotalDailyEnergyExpenditure(UserViewmodel userViewmodel)
-        {
-            double calculateBasalMetabolicRate = CalculateBasalMetabolicRate(userViewmodel);
-            double factor = _context.ActivityLevels.FirstOrDefault(a => a.Id == userViewmodel.ActivityLevelId).Factor;
-            if(calculateBasalMetabolicRate > 0 && factor > 0)
-            {
-                //userViewmodel.calculatedTDEE = Math.Round(calculateBasalMetabolicRate * factor);
-                userViewmodel.calculatedTDEE = Convert.ToInt32(calculateBasalMetabolicRate * factor);
-            }
-        }
-
-        private int calculateAge(DateOnly birthday)
-        {
-            int age = DateTime.Today.Year - birthday.Year;
-            // TODO: Check if the birthday has already occurred this year, and adjust the age accordingly
-            return age;
         }
 
         private void SetViewData()

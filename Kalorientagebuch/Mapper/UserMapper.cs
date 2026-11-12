@@ -1,27 +1,24 @@
-﻿using Kalorientagebuch.Models;
+﻿using Kalorientagebuch.Models.Requests;
+using Kalorientagebuch.Models;
 using Kalorientagebuch.Viewmodels;
-using Microsoft.AspNetCore.Identity;
+using Kalorientagebuch.Models.Responses;
 
 namespace Kalorientagebuch.Mapper
 {
     public class UserMapper
     {
 
-        public static UserViewmodel Map(User user)
+        public static void Map(User user, UserEditRequest userEditRequest)
         {
-            return new UserViewmodel
-            {
-                Id = user.Id,
-                Name = user.Name,
-                Birthday = user.Birthday,
-                Weight = user.Weight,
-                Height = user.Height,
-                Gender = user.Gender,
-                //ActivityLevel = user.ActivityLevel,
-                ActivityLevelId = user.ActivityLevelId,
-                Password = user.PasswordHash
-            };
+            user.Id = userEditRequest.Id;
+            user.Name = userEditRequest.Name;
+            user.Birthday = userEditRequest.Birthday;
+            user.Weight = userEditRequest.Weight;
+            user.Height = userEditRequest.Height;
+            user.Gender = userEditRequest.Gender;
+            user.ActivityLevelId = userEditRequest.ActivityLevelId;
         }
+
         public static User Map(UserViewmodel viewmodel)
         {
             return new User
@@ -32,24 +29,61 @@ namespace Kalorientagebuch.Mapper
                 Weight = viewmodel.Weight,
                 Height = viewmodel.Height,
                 Gender = viewmodel.Gender,
-                //ActivityLevel = viewmodel.ActivityLevel,
                 ActivityLevelId = viewmodel.ActivityLevelId,
             };
         }
 
-        public static void Map(User user, UserViewmodel viewmodel, IPasswordHasher<User> passwordHasher)
+        public static UserDetailResponse MapUserDetailResponse(User user)
         {
-            user.Name = viewmodel.Name;
-            user.Birthday = viewmodel.Birthday;
-            user.Weight = viewmodel.Weight;
-            user.Height = viewmodel.Height;
-            user.Gender = viewmodel.Gender;
-            //user.ActivityLevel = viewmodel.ActivityLevel;
-            user.ActivityLevelId = viewmodel.ActivityLevelId;
-            if (!string.IsNullOrEmpty(viewmodel.Password))
+            return new UserDetailResponse
             {
-                user.PasswordHash = passwordHasher.HashPassword(user, viewmodel.Password);
-            }
+                Id = user.Id,
+                Name = user.Name,
+                Birthday = user.Birthday,
+                Weight = user.Weight,
+                Height = user.Height,
+                Gender = user.Gender,
+            };
+        }
+
+        public static UserEditRequest MapUserEditRequest(User user)
+        {
+            return new UserEditRequest
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Birthday = user.Birthday,
+                Weight = user.Weight,
+                Height = user.Height,
+                Gender = user.Gender,
+                ActivityLevelId = user.ActivityLevelId,
+            };
+        }
+
+        public static IndexItemUserViewModel Map(User user)
+        {
+            return new IndexItemUserViewModel
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Birthday = user.Birthday,
+                Weight = user.Weight,
+                Height = user.Height,
+                Gender = user.Gender,
+            };
+        }
+
+        public static User Map(UserCreateRequest userCreateRequest)
+        {
+            User user = new User();
+            user.Name = userCreateRequest.Name;
+            user.Birthday = userCreateRequest.Birthday;
+            user.Weight = userCreateRequest.Weight;
+            user.Height = userCreateRequest.Height;
+            user.Gender = userCreateRequest.Gender;
+            user.ActivityLevelId = userCreateRequest.ActivityLevelId;
+
+            return user;
         }
     }
 }

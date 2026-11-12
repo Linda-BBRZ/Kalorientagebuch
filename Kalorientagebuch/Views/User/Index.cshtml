@@ -1,8 +1,4 @@
-﻿@model List<Kalorientagebuch.Viewmodels.UserViewmodel>
-
-@{
-    ViewData["Kalorientagebuch Nutzer"] = "User";
-}
+﻿@model Kalorientagebuch.Viewmodels.IndexUserViewModel
 
 <div>
     <h1 class="display-4">Nutzer Übersicht</h1>
@@ -20,7 +16,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var user in Model)
+            @foreach (var user in Model.Items)
             {
                 <tr>
                     <td><img src="/User/Image/@user.Id" alt="Picture" style="max-width: 60px" /></td>
