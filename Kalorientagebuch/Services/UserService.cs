@@ -1,7 +1,6 @@
 ﻿using Kalorientagebuch.Data;
-using Kalorientagebuch.Viewmodels;
-using Kalorientagebuch.Models;
 using Kalorientagebuch.Interfaces;
+using Kalorientagebuch.Models;
 
 namespace Kalorientagebuch.Services
 {
@@ -14,7 +13,7 @@ namespace Kalorientagebuch.Services
             _context = context;
         }
 
-        private static double CalculateBasalMetabolicRate(User user)
+        private double CalculateBasalMetabolicRate(User user)
         {
             double basalMetabolicRate = 0;
             if (user.Gender == "male")
@@ -54,7 +53,7 @@ namespace Kalorientagebuch.Services
             }
         }
 
-        private static int calculateAge(DateOnly birthday)
+        private int calculateAge(DateOnly birthday)
         {
             int age = DateTime.Today.Year - birthday.Year;
             // TODO: Check if the birthday has already occurred this year, and adjust the age accordingly

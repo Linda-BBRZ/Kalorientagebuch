@@ -20,11 +20,15 @@ namespace Kalorientagebuch.Controllers
         private readonly IPasswordHasher<Models.User> _passwordHasher;
 
         private readonly IUserService _userService;
-        public UserController(KalorientagebuchDbContext context, IPasswordHasher<User> passwordHasher, IUserService userService)
+
+        private readonly IUserMapper _userMapper;
+        public UserController(KalorientagebuchDbContext context, IPasswordHasher<User> passwordHasher, 
+            IUserService userService, IUserMapper userMapper)
         {
             _context = context;
             _passwordHasher = passwordHasher;
             _userService = userService;
+            _userMapper = userMapper;
 
         }
 
@@ -32,7 +36,7 @@ namespace Kalorientagebuch.Controllers
         public IActionResult Index()
         {
             IndexUserViewModel indexUserViewModel = new IndexUserViewModel();
-            indexUserViewModel.Items = _context.Users.Select(u => UserMapper.Map(u)).ToList();
+            indexUserViewModel.Items = _context.Users.Select(u => _userMapper.Map(u)).ToList();
 
             return View(indexUserViewModel);
         }
@@ -46,7 +50,7 @@ namespace Kalorientagebuch.Controllers
             {
                 return NotFound();
             }
-            UserDetailResponse userDetailResponse = UserMapper.MapUserDetailResponse(user);
+            UserDetailResponse userDetailResponse = _userMapper.MapUserDetailResponse(user);
             userDetailResponse.calculatedTDEE = _userService.CalculateTotalDailyEnergyExpenditure(user);
             
             return View(userDetailResponse);
@@ -69,7 +73,7 @@ namespace Kalorientagebuch.Controllers
                 return NotFound();
             }
 
-            UserEditRequest userEditRequest = UserMapper.MapUserEditRequest(user);
+            UserEditRequest userEditRequest = _userMapper.MapUserEditRequest(user);
             return View(userEditRequest);
         }
 
@@ -91,7 +95,7 @@ namespace Kalorientagebuch.Controllers
                 return NotFound();
             }
 
-            UserMapper.Map(user, userEditRequest);
+            _userMapper.Map(user, userEditRequest);
             if (userEditRequest.PictureFile != null && userEditRequest.PictureFile.Length > 0)
             {
                 using var memoryStream = new MemoryStream();
@@ -132,7 +136,7 @@ namespace Kalorientagebuch.Controllers
                 return View(userCreateRequest);
             }
 
-            var user = UserMapper.Map(userCreateRequest);
+            var user = _userMapper.Map(userCreateRequest);
             user.PasswordHash = _passwordHasher.HashPassword(user, userCreateRequest.Password);
 
             if (userCreateRequest.PictureFile != null && userCreateRequest.PictureFile.Length > 0)
@@ -211,7 +215,7 @@ namespace Kalorientagebuch.Controllers
 
             await HttpContext.SignInAsync("loginCookieAuth", principal);
 
-            return base.RedirectToAction("Details", "User", UserMapper.Map(user));
+            return base.RedirectToAction("Details", "User", _userMapper.Map(user));
         }
 
         public async Task<IActionResult> Logout()

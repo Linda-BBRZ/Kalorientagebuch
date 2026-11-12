@@ -2,7 +2,7 @@
 
 namespace Kalorientagebuch.Models.Requests
 {
-    public class UserEditRequest
+    public record UserEditRequest
     {
 
         public int Id { get; set; }

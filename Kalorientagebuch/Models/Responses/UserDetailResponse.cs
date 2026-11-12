@@ -2,7 +2,7 @@
 
 namespace Kalorientagebuch.Models.Responses
 {
-    public class UserDetailResponse
+    public record UserDetailResponse
     {
         public int Id { get; set; }
 

@@ -1,14 +1,15 @@
-﻿using Kalorientagebuch.Models.Requests;
-using Kalorientagebuch.Models;
-using Kalorientagebuch.Viewmodels;
+﻿using Kalorientagebuch.Models;
+using Kalorientagebuch.Interfaces;
+using Kalorientagebuch.Models.Requests;
 using Kalorientagebuch.Models.Responses;
+using Kalorientagebuch.Viewmodels;
 
 namespace Kalorientagebuch.Mapper
 {
-    public class UserMapper
+    public class UserMapper : IUserMapper
     {
 
-        public static void Map(User user, UserEditRequest userEditRequest)
+        public void Map(User user, UserEditRequest userEditRequest)
         {
             user.Id = userEditRequest.Id;
             user.Name = userEditRequest.Name;
@@ -19,7 +20,7 @@ namespace Kalorientagebuch.Mapper
             user.ActivityLevelId = userEditRequest.ActivityLevelId;
         }
 
-        public static User Map(UserViewmodel viewmodel)
+        public User Map(UserViewmodel viewmodel)
         {
             return new User
             {
@@ -33,7 +34,7 @@ namespace Kalorientagebuch.Mapper
             };
         }
 
-        public static UserDetailResponse MapUserDetailResponse(User user)
+        public UserDetailResponse MapUserDetailResponse(User user)
         {
             return new UserDetailResponse
             {
@@ -46,7 +47,7 @@ namespace Kalorientagebuch.Mapper
             };
         }
 
-        public static UserEditRequest MapUserEditRequest(User user)
+        public UserEditRequest MapUserEditRequest(User user)
         {
             return new UserEditRequest
             {
@@ -60,7 +61,7 @@ namespace Kalorientagebuch.Mapper
             };
         }
 
-        public static IndexItemUserViewModel Map(User user)
+        public IndexItemUserViewModel Map(User user)
         {
             return new IndexItemUserViewModel
             {
@@ -73,7 +74,7 @@ namespace Kalorientagebuch.Mapper
             };
         }
 
-        public static User Map(UserCreateRequest userCreateRequest)
+        public User Map(UserCreateRequest userCreateRequest)
         {
             User user = new User();
             user.Name = userCreateRequest.Name;

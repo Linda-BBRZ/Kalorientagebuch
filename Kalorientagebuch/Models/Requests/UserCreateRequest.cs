@@ -2,7 +2,7 @@
 
 namespace Kalorientagebuch.Models.Requests
 {
-    public class UserCreateRequest
+    public record UserCreateRequest
     {
 
         [Display(Name = "Name:"), MaxLength(25), MinLength(2)]
