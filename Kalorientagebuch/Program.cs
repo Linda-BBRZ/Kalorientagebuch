@@ -20,6 +20,8 @@ builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserMapper, UserMapper>();
 
+builder.Services.AddScoped<IEntryMapper, EntryMapper>();
+
 builder.Services.AddDbContext<KalorientagebuchDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 

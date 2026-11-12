@@ -1,4 +1,4 @@
-﻿@model List<Kalorientagebuch.Viewmodels.EntryViewModel>
+﻿@model Kalorientagebuch.Viewmodels.IndexEntryViewModel
 
 <style>
     td {
@@ -21,9 +21,9 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var entry in Model)
+            @foreach (var entry in Model.Entries)
             {
-                <tr style="background-color:@entry.Category?.Color">
+                <tr style="background-color:@entry.Color">
                     <td>@entry.Id</td>
                     <td>@entry.Date.ToString("yyyy-MM-dd")</td>
                     <td>@entry.Description</td>
