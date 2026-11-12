@@ -3,7 +3,6 @@ using Kalorientagebuch.Mapper;
 using Kalorientagebuch.Viewmodels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client;
 
 namespace Kalorientagebuch.Controllers
 {

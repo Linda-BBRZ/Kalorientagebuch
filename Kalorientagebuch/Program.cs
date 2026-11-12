@@ -1,5 +1,8 @@
 using Kalorientagebuch.Data;
+using Kalorientagebuch.Interfaces;
+using Kalorientagebuch.Mapper;
 using Kalorientagebuch.Models;
+using Kalorientagebuch.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +16,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUserMapper, UserMapper>();
+
+builder.Services.AddScoped<IEntryMapper, EntryMapper>();
 
 builder.Services.AddDbContext<KalorientagebuchDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
