@@ -43,3 +43,6 @@ Zeitraum und/oder der gewählten Kategorie entsprechen.
 Darüber hinaus soll die Anwendung über ein zeitgemäßes, ansprechendes Erscheinungsbild verfügen und
 sich den Benutzern ohne Einschulung erschließen. Sämtliche Eingaben werden geprüft; bei fehlerhaften
 Angaben erhält der Benutzer eine verständliche Rückmeldung.
+
+## Danksagungen
+Dieses Projekt nutzt Daten von [Open Food Facts](https://world.openfoodfacts.org), lizenziert unter der [Open Database License (ODbL)](https://opendatacommons.org/licenses/odbl/).
