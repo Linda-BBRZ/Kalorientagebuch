@@ -22,6 +22,8 @@ builder.Services.AddScoped<IUserMapper, UserMapper>();
 
 builder.Services.AddScoped<IEntryMapper, EntryMapper>();
 
+builder.Services.AddScoped<ICategoryMapper, CategoryMapper>();
+
 builder.Services.AddDbContext<KalorientagebuchDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 

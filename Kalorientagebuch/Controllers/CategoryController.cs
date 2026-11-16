@@ -10,6 +10,8 @@ namespace Kalorientagebuch.Controllers
     {
         private readonly KalorientagebuchDbContext _context;
 
+        private readonly CategoryMapper _categoryMapper;
+
         public CategoryController(KalorientagebuchDbContext context)
         {
             _context = context;
@@ -43,7 +45,7 @@ namespace Kalorientagebuch.Controllers
             SetViewData();
             if (ModelState.IsValid)
             {
-                _context.Categories.Add(CategoryMapper.Map(request));
+                _context.Categories.Add(_categoryMapper.Map(request));
                 _context.SaveChanges();
                 return RedirectToAction("Index", "Category");
             }
@@ -59,7 +61,7 @@ namespace Kalorientagebuch.Controllers
             {
                 return NotFound();
             }
-            CategoryViewModel categoryViewModel = CategoryMapper.Map(category);
+            CategoryViewModel categoryViewModel = _categoryMapper.Map(category);
             return View(categoryViewModel);
         }
 
@@ -74,7 +76,7 @@ namespace Kalorientagebuch.Controllers
                 {
                     return NotFound();
                 }
-                CategoryMapper.Map(categoryViewModel, category);
+                _categoryMapper.Map(categoryViewModel, category);
                 _context.SaveChanges();
                 return RedirectToAction("Index", "Category");
             }
@@ -102,7 +104,7 @@ namespace Kalorientagebuch.Controllers
             {
                 return NotFound();
             }
-            CategoryViewModel categoryViewModel = CategoryMapper.Map(category);
+            CategoryViewModel categoryViewModel = _categoryMapper.Map(category);
             return View(categoryViewModel);
         }
 

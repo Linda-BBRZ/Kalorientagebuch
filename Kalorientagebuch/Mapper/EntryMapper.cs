@@ -1,6 +1,7 @@
 ﻿using Kalorientagebuch.Interfaces;
 using Kalorientagebuch.Models;
 using Kalorientagebuch.Models.Requests;
+using Kalorientagebuch.Models.Responses;
 using Kalorientagebuch.Viewmodels;
 
 namespace Kalorientagebuch.Mapper
@@ -47,17 +48,14 @@ namespace Kalorientagebuch.Mapper
             };
         }
 
-        public Entry Map(EntryEditRequest entryEditRequest)
+        public void Map(Entry entry, EntryEditRequest entryEditRequest)
         {
-            return new Entry
-            {
-                CaloriesAmount = entryEditRequest.CaloriesAmount,
-                CategoryId = entryEditRequest.CategoryId,
-                Date = entryEditRequest.Date,
-                Description = entryEditRequest.Description,
-                Id = entryEditRequest.Id,
-                UserId = entryEditRequest.UserId
-            };
+            entry.CaloriesAmount = entryEditRequest.CaloriesAmount;
+            entry.CategoryId = entryEditRequest.CategoryId;
+            entry.Date = entryEditRequest.Date;
+            entry.Description = entryEditRequest.Description;
+            entry.Id = entryEditRequest.Id;
+            entry.UserId = entryEditRequest.UserId;
         }
 
         public EntryEditRequest MapEntryEditRequest(Entry entry)
@@ -73,12 +71,25 @@ namespace Kalorientagebuch.Mapper
             };
         }
 
+        public EntryDetailResponse MapEntryDetailResponse(Entry entry)
+        {
+            return new EntryDetailResponse
+            {
+                CaloriesAmount = entry.CaloriesAmount,
+                CategoryId = entry.CategoryId,
+                Date = entry.Date,
+                Description = entry.Description,
+                Id = entry.Id,
+                UserId = entry.UserId
+            };
+        }
+
         public IndexItemEntryViewModel Map(Entry entry)
         {
             return new IndexItemEntryViewModel()
             {
                 CaloriesAmount = entry.CaloriesAmount,
-                Color = entry.Category?.Color,
+                Color = entry.Category?.Color is { Length: > 0 } hex ? $"#{hex.TrimStart('#')}" : null,
                 Date = entry.Date,
                 CategoryId = entry.CategoryId,
                 Description = entry.Description,

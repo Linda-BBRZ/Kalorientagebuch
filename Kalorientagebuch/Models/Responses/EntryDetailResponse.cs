@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Kalorientagebuch.Models.Responses
 {
+    [NotMapped]
     public record EntryDetailResponse
     {
         public int Id { get; set; }

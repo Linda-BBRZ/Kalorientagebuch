@@ -40,6 +40,10 @@ namespace Kalorientagebuch.Controllers
         public IActionResult Create(EntryCreateRequest entryCreateRequest)
         {
             SetViewData();
+            if(!User.Identity.IsAuthenticated)
+            {
+                ModelState.AddModelError(string.Empty, "Sie müssen angemeldet sein, um einen Eintrag zu erstellen.");
+            }
             if (ModelState.IsValid)
             {
                 entryCreateRequest.UserId = _context.Users.FirstOrDefault(u => u.Name == User.Identity.Name).Id;
@@ -69,18 +73,18 @@ namespace Kalorientagebuch.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(EntryViewModel entryViewModel)
+        public IActionResult Edit(EntryEditRequest entryEditRequest)
         {
             SetViewData();
             if (ModelState.IsValid)
             {
-                var entry = _context.Entries.FirstOrDefault(e => e.Id == entryViewModel.Id);
+                var entry = _context.Entries.FirstOrDefault(e => e.Id == entryEditRequest.Id);
                 if (entry == null)
                 {
                     return NotFound();
                 }
                 //entryViewModel.UserId = _context.Users.FirstOrDefault(u => u.Name == User.Identity.Name).Id;
-                _entryMapper.Map(entry, entryViewModel);
+                _entryMapper.Map(entry, entryEditRequest);
                 _context.SaveChanges();
             }
             return RedirectToAction("Index", "Entry");
@@ -96,6 +100,17 @@ namespace Kalorientagebuch.Controllers
             _context.Entries.Remove(entry);
             _context.SaveChanges();
             return RedirectToAction("Index", "Entry");
+        }
+
+        public IActionResult Details(int id)
+        {
+            var entry = _context.Entries.Include(c => c.Category).FirstOrDefault(e => e.Id == id);
+            if (entry == null)
+            {
+                return NotFound();
+            }
+            var entryDetailResponse = _entryMapper.MapEntryDetailResponse(entry);
+            return View(entryDetailResponse);
         }
 
         private void SetViewData()

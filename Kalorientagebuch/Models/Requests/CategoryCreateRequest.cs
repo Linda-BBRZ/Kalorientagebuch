@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Kalorientagebuch.Viewmodels
 {
+    [NotMapped]
     public record CategoryCreateRequest
     {
         [MaxLength(50)]

@@ -1,8 +1,10 @@
 ﻿using Kalorientagebuch.Viewmodels;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Kalorientagebuch.Models.Requests
 {
+    [NotMapped]
     public record EntryCreateRequest
     {
         [Display(Name = "Beschreibung"), MaxLength(100)]
