@@ -21,6 +21,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserMapper, UserMapper>();
 
 builder.Services.AddScoped<IEntryMapper, EntryMapper>();
+builder.Services.AddScoped<IEntryService, EntryService>();
 
 builder.Services.AddScoped<ICategoryMapper, CategoryMapper>();
 
