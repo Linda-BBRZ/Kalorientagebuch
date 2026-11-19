@@ -1,9 +1,9 @@
 ﻿using Kalorientagebuch.Data;
 using Kalorientagebuch.Interfaces;
-using Kalorientagebuch.Mapper;
 using Kalorientagebuch.Models.Requests;
 using Kalorientagebuch.Viewmodels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace Kalorientagebuch.Controllers
@@ -13,11 +13,13 @@ namespace Kalorientagebuch.Controllers
         private readonly KalorientagebuchDbContext _context;
 
         private readonly IEntryMapper _entryMapper;
+        private readonly IEntryService _entryService;
 
-        public EntryController(KalorientagebuchDbContext context, IEntryMapper entryMapper)
+        public EntryController(KalorientagebuchDbContext context, IEntryMapper entryMapper, IEntryService entryService)
         {
             _context = context;
             _entryMapper = entryMapper;
+            _entryService = entryService;
         }
 
         [HttpGet]
@@ -32,18 +34,28 @@ namespace Kalorientagebuch.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            SetViewData();
-            return View();
+            EntryCreateRequest entryCreateRequest = new EntryCreateRequest();
+            entryCreateRequest.Categories = new SelectList(_context.Categories.ToList(), "Id", "Caption");
+            return View(entryCreateRequest);
         }
 
         [HttpPost]
-        public IActionResult Create(EntryCreateRequest entryCreateRequest)
+        //[Authorize]
+        public IActionResult Save(EntryCreateRequest entryCreateRequest)
         {
-            SetViewData();
-            if(!User.Identity.IsAuthenticated)
+            //SetViewData();
+            //if (!User.Identity.IsAuthenticated)
+            //{
+            //    ModelState.AddModelError(string.Empty, "Sie müssen angemeldet sein, um einen Eintrag zu erstellen.");
+            //}
+            entryCreateRequest.Categories = new SelectList(_context.Categories.ToList(), "Id", "Caption");
+
+            if (!entryCreateRequest.CategoryId.HasValue)
             {
-                ModelState.AddModelError(string.Empty, "Sie müssen angemeldet sein, um einen Eintrag zu erstellen.");
+                ModelState.AddModelError(nameof(entryCreateRequest.CategoryId), "CategoryId darf nicht leer sein");
+                return View("~/Views/Entry/Create.cshtml", entryCreateRequest);
             }
+
             if (ModelState.IsValid)
             {
                 entryCreateRequest.UserId = _context.Users.FirstOrDefault(u => u.Name == User.Identity.Name).Id;
@@ -111,6 +123,45 @@ namespace Kalorientagebuch.Controllers
             }
             var entryDetailResponse = _entryMapper.MapEntryDetailResponse(entry);
             return View(entryDetailResponse);
+        }
+
+        [HttpPost]
+        public IActionResult Create(EntryCreateRequest request)
+        {
+            EntryCreateRequest entryCreateRequest = _entryService.GetProductInfosByBarcode(request.Barcode);
+
+            int? selectedCategory = null;
+
+            // Match the selected category from the request with the categories in the database
+            if (entryCreateRequest.Categories != null && entryCreateRequest.Categories.Any())
+            {
+                foreach (var category in entryCreateRequest.Categories)
+                {
+                    if(category.Value.Contains("beverages"))
+                    {
+                        selectedCategory = _context.Categories.FirstOrDefault(c => c.Caption == "Trinken").Id;
+                        break;
+                    }
+                }
+
+                if(selectedCategory == null)
+                {
+                    selectedCategory = _context.Categories.FirstOrDefault(c => c.Caption == "Essen").Id;
+                }
+
+                //if (entryCreateRequest.Categories.Items.)
+                //{
+                //    selectedCategory = _context.Categories.FirstOrDefault(c => c.Caption == "Trinken").Id;
+                //} else
+                //{
+                //    selectedCategory = _context.Categories.FirstOrDefault(c => c.Caption == "Essen").Id;
+                //}
+            }
+            entryCreateRequest.CategoryId = selectedCategory;
+            entryCreateRequest.Categories = new SelectList(_context.Categories.ToList(), "Id", "Caption", selectedCategory);
+
+            //return View("~/Views/Entry/Create.cshtml", entryCreateRequest);
+            return View(entryCreateRequest);
         }
 
         private void SetViewData()

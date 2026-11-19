@@ -1,6 +1,5 @@
 ﻿using Kalorientagebuch.Data;
 using Kalorientagebuch.Interfaces;
-using Kalorientagebuch.Mapper;
 using Kalorientagebuch.Models;
 using Kalorientagebuch.Models.Requests;
 using Kalorientagebuch.Models.Responses;
@@ -8,7 +7,6 @@ using Kalorientagebuch.Viewmodels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace Kalorientagebuch.Controllers
@@ -17,7 +15,7 @@ namespace Kalorientagebuch.Controllers
     {
         private readonly KalorientagebuchDbContext _context;
 
-        private readonly IPasswordHasher<Models.User> _passwordHasher;
+        private readonly IPasswordHasher<User> _passwordHasher;
 
         private readonly IUserService _userService;
 

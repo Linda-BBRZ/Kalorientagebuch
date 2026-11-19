@@ -41,10 +41,10 @@ namespace Kalorientagebuch.Mapper
             return new Entry
             {
                 Description = entryCreateRequest.Description,
-                CaloriesAmount = entryCreateRequest.CaloriesAmount,
-                CategoryId = entryCreateRequest.CategoryId,
-                Date = entryCreateRequest.Date,
-                UserId = entryCreateRequest.UserId
+                CaloriesAmount = entryCreateRequest.CaloriesAmount.Value,
+                CategoryId = entryCreateRequest.CategoryId.Value,
+                Date = entryCreateRequest.Date.Value,
+                UserId = entryCreateRequest.UserId.Value
             };
         }
 

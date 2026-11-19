@@ -12,7 +12,7 @@ namespace Kalorientagebuch.Viewmodels
         public string? Description { get; set; }
 
         [Display(Name = "Datum")]
-        public DateTime Date { get; set; }
+        public DateOnly Date { get; set; }
 
         [Display(Name = "Kalorienmenge")]
         public int CaloriesAmount { get; set; }

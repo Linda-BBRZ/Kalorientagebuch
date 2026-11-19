@@ -1,4 +1,5 @@
 ﻿using Kalorientagebuch.Viewmodels;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -11,16 +12,21 @@ namespace Kalorientagebuch.Models.Requests
         public string? Description { get; set; }
 
         [Display(Name = "Datum")]
-        public DateTime Date { get; set; }
+        public DateOnly? Date { get; set; }
 
         [Display(Name = "Kalorienmenge")]
-        public int CaloriesAmount { get; set; }
+        public int? CaloriesAmount { get; set; }
 
         [Display(Name = "Kategorie")]
-        public int CategoryId { get; set; }
+        public int? CategoryId { get; set; }
 
         [Display(Name = "Nutzer")]
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
+
+        [Display(Name = "Barcode")]
+        public string? Barcode { get; set; }
+
+        public SelectList Categories { get; set; }
 
     }
 }
