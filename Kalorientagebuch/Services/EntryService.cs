@@ -16,9 +16,10 @@ namespace Kalorientagebuch.Services
             var kcal = openFoodFactsResponse.Product.Nutriments.EnergyKcalServing;
             var kcal100g = openFoodFactsResponse.Product.Nutriments.EnergyKcal100g;
 
+            // TODO: Handle case when kcal is null and kcal100g is not null
             entryCreateRequest.CaloriesAmount = Int32.Parse(kcal.ToString());
             entryCreateRequest.Description = string.Join(" ", [openFoodFactsResponse.Product.Brands, openFoodFactsResponse.Product.ProductNameDe]);
-            entryCreateRequest.Date = DateTime.Now;
+            entryCreateRequest.Date = DateOnly.FromDateTime(DateTime.Now);
             entryCreateRequest.Barcode = barcode;
             entryCreateRequest.Categories = openFoodFactsResponse.Product.AdditionalData != null && openFoodFactsResponse.Product.AdditionalData.ContainsKey("categories_tags")
                 ? new SelectList(openFoodFactsResponse.Product.AdditionalData["categories_tags"].EnumerateArray().Select(c => c.GetString()).Where(c => c != null).Select(c => new { Id = c, Caption = c }).ToList(), "Id", "Caption")

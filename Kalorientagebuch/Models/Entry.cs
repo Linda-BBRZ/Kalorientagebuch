@@ -6,7 +6,7 @@
 
         public string? Description { get; set; }
 
-        public DateTime Date { get; set; }
+        public DateOnly Date { get; set; }
 
         public int CaloriesAmount { get; set; }
 
