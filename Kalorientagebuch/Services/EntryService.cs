@@ -13,15 +13,22 @@ namespace Kalorientagebuch.Services
             OpenFoodFactsResponse openFoodFactsResponse = callAPI(barcode).Result;
             EntryCreateRequest entryCreateRequest = new EntryCreateRequest();
 
-            var kcal = openFoodFactsResponse.Product.Nutriments.EnergyKcalServing;
-            var kcal100g = openFoodFactsResponse.Product.Nutriments.EnergyKcal100g;
+            var kcal = openFoodFactsResponse.Product?.Nutriments?.EnergyKcalServing;
+            
+            if(kcal == null)
+            {
+                var kcal100g = openFoodFactsResponse.Product?.Nutriments?.EnergyKcal100g;
+            }
 
-            // TODO: Handle case when kcal is null and kcal100g is not null
-            entryCreateRequest.CaloriesAmount = Int32.Parse(kcal.ToString());
-            entryCreateRequest.Description = string.Join(" ", [openFoodFactsResponse.Product.Brands, openFoodFactsResponse.Product.ProductNameDe]);
+            if(int.TryParse(kcal.ToString(), out int calories))
+            {
+                entryCreateRequest.CaloriesAmount = calories;
+            }
+            
+            entryCreateRequest.Description = string.Join(" ", [openFoodFactsResponse?.Product?.Brands, openFoodFactsResponse?.Product?.ProductNameDe]);
             entryCreateRequest.Date = DateOnly.FromDateTime(DateTime.Now);
             entryCreateRequest.Barcode = barcode;
-            entryCreateRequest.Categories = openFoodFactsResponse.Product.AdditionalData != null && openFoodFactsResponse.Product.AdditionalData.ContainsKey("categories_tags")
+            entryCreateRequest.Categories = openFoodFactsResponse?.Product?.AdditionalData != null && openFoodFactsResponse.Product.AdditionalData.ContainsKey("categories_tags")
                 ? new SelectList(openFoodFactsResponse.Product.AdditionalData["categories_tags"].EnumerateArray().Select(c => c.GetString()).Where(c => c != null).Select(c => new { Id = c, Caption = c }).ToList(), "Id", "Caption")
                 : new SelectList(Enumerable.Empty<object>(), "Id", "Caption");
 

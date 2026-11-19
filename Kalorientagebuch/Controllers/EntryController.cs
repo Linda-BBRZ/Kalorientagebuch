@@ -39,28 +39,38 @@ namespace Kalorientagebuch.Controllers
             return View(entryCreateRequest);
         }
 
-        //[HttpPost]
-        //public IActionResult Create(EntryCreateRequest entryCreateRequest)
-        //{
-        //    SetViewData();
-        //    if(!User.Identity.IsAuthenticated)
-        //    {
-        //        ModelState.AddModelError(string.Empty, "Sie müssen angemeldet sein, um einen Eintrag zu erstellen.");
-        //    }
-        //    if (ModelState.IsValid)
-        //    {
-        //        entryCreateRequest.UserId = _context.Users.FirstOrDefault(u => u.Name == User.Identity.Name).Id;
-        //        _context.Entries.Add(_entryMapper.Map(entryCreateRequest));
-        //        _context.SaveChanges();
-        //        return RedirectToAction("Index", "Entry");
-        //    }
-        //    else
-        //    {
-        //        return View(entryCreateRequest);
-        //    }
+        [HttpPost]
+        //[Authorize]
+
+        public IActionResult Save(EntryCreateRequest entryCreateRequest)
+        {
+            //SetViewData();
+            //if (!User.Identity.IsAuthenticated)
+            //{
+            //    ModelState.AddModelError(string.Empty, "Sie müssen angemeldet sein, um einen Eintrag zu erstellen.");
+            //}
+            entryCreateRequest.Categories = new SelectList(_context.Categories.ToList(), "Id", "Caption");
+
+            if (!entryCreateRequest.CategoryId.HasValue)
+            {
+                ModelState.AddModelError(nameof(entryCreateRequest.CategoryId), "CategoryId darf nicht leer sein");
+                return View("~/Views/Entry/Create.cshtml", entryCreateRequest);
+            }
+
+            if (ModelState.IsValid)
+            {
+                entryCreateRequest.UserId = _context.Users.FirstOrDefault(u => u.Name == User.Identity.Name).Id;
+                _context.Entries.Add(_entryMapper.Map(entryCreateRequest));
+                _context.SaveChanges();
+                return RedirectToAction("Index", "Entry");
+            }
+            else
+            {
+                return View(entryCreateRequest);
+            }
 
 
-        //}
+        }
 
         [HttpGet]
         public IActionResult Edit(int id)

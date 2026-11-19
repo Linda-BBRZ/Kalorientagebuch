@@ -3,8 +3,10 @@ using Kalorientagebuch.Interfaces;
 using Kalorientagebuch.Mapper;
 using Kalorientagebuch.Models;
 using Kalorientagebuch.Services;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
@@ -52,6 +54,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+app.UseAuthentication();
 
 
 app.MapControllerRoute(
@@ -169,5 +172,21 @@ if (dbContext.Categories.Count() == 0)
     });
     dbContext.SaveChanges();
 }
+//if(app.Environment.IsDevelopment())
+//{
+//    app.Use(async (context, next) =>
+//    {
+//        var user = dbContext.Users.FirstOrDefault();
+//        var claims = new List<Claim>
+//            {
+//                new Claim(ClaimTypes.Name, user.Name),
+//                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+//            };
 
+//        var identity = new ClaimsIdentity(claims, "loginCookieAuth");
+//        var principal = new ClaimsPrincipal(identity);
+//        context.User = principal;
+//        await next();
+//    });
+//}
 app.Run();
