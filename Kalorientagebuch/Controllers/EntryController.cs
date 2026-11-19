@@ -41,7 +41,6 @@ namespace Kalorientagebuch.Controllers
 
         [HttpPost]
         //[Authorize]
-
         public IActionResult Save(EntryCreateRequest entryCreateRequest)
         {
             //SetViewData();
