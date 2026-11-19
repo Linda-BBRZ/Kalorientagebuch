@@ -1,5 +1,8 @@
-﻿namespace Kalorientagebuch.Models.Responses
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Kalorientagebuch.Models.Responses
 {
+    [NotMapped]
     public record CategoryDetailResponse
     {
         public int Id { get; set; }

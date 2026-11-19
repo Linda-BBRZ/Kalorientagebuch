@@ -1,11 +1,12 @@
-﻿using Kalorientagebuch.Models;
+﻿using Kalorientagebuch.Interfaces;
+using Kalorientagebuch.Models;
 using Kalorientagebuch.Viewmodels;
 
 namespace Kalorientagebuch.Mapper
 {
-    public class CategoryMapper
+    public class CategoryMapper : ICategoryMapper
     {
-        public static Category Map(CategoryCreateRequest request)
+        public Category Map(CategoryCreateRequest request)
         {
             Category category = new Category();
             category.Caption = request.Caption;
@@ -14,7 +15,7 @@ namespace Kalorientagebuch.Mapper
             return category;
         }
 
-        public static CategoryViewModel Map(Category category)
+        public CategoryViewModel Map(Category category)
         {
             CategoryViewModel categoryViewModel = new CategoryViewModel
             {
@@ -26,11 +27,12 @@ namespace Kalorientagebuch.Mapper
             return categoryViewModel;
         }
 
-        public static void Map(CategoryViewModel categoryViewModel, Category category)
+        public void Map(CategoryViewModel categoryViewModel, Category category)
         {
             category.Id = categoryViewModel.Id;
             category.Caption = categoryViewModel.Caption;
             category.CategoryTypeId = categoryViewModel.CategoryTypeId;
+            category.Color = categoryViewModel.Color?.TrimStart('#');
         }
 
     }

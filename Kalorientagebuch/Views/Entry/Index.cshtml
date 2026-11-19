@@ -1,4 +1,4 @@
-﻿@model List<Kalorientagebuch.Viewmodels.EntryViewModel>
+﻿@model Kalorientagebuch.Viewmodels.IndexEntryViewModel
 
 <style>
     td {
@@ -7,7 +7,20 @@
 </style>
 
 <div>
-    <h1 class="display-4">Einträge Übersicht</h1>
+    <h1>Einträge Übersicht</h1>
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div>
+            <a class="btn btn-primary" asp-area="" asp-controller="Entry" asp-action="Create">+ Neuen Eintrag anlegen</a>
+        </div>
+    }
+    else
+    {
+        <div>
+            <a class="btn btn-primary disabled">Einloggen, um neue Einträge anzulegen</a>
+        </div>
+    }
 
     <table class="table">
         <thead>
@@ -21,9 +34,9 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var entry in Model)
+            @foreach (var entry in Model.Entries)
             {
-                <tr style="background-color:@entry.Category?.Color">
+                <tr style="background-color:@entry.Color">
                     <td>@entry.Id</td>
                     <td>@entry.Date.ToString("yyyy-MM-dd")</td>
                     <td>@entry.Description</td>
