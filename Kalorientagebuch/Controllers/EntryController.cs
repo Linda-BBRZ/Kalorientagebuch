@@ -42,7 +42,7 @@ namespace Kalorientagebuch.Controllers
         [HttpPost]
         //[Authorize]
         public IActionResult Save(EntryCreateRequest entryCreateRequest)
-        {
+        { 
             //SetViewData();
             //if (!User.Identity.IsAuthenticated)
             //{
@@ -50,9 +50,14 @@ namespace Kalorientagebuch.Controllers
             //}
             entryCreateRequest.Categories = new SelectList(_context.Categories.ToList(), "Id", "Caption");
 
-            if (!entryCreateRequest.CategoryId.HasValue)
+            //if (!entryCreateRequest.CategoryId.HasValue)
+            //{
+            //    ModelState.AddModelError(nameof(entryCreateRequest.CategoryId), "CategoryId darf nicht leer sein");
+            //    return View("~/Views/Entry/Create.cshtml", entryCreateRequest);
+            //}
+            if (!entryCreateRequest.CaloriesAmount.HasValue)
             {
-                ModelState.AddModelError(nameof(entryCreateRequest.CategoryId), "CategoryId darf nicht leer sein");
+                ModelState.AddModelError(nameof(entryCreateRequest.CaloriesAmount), "Kalorienmenge darf nicht leer sein");
                 return View("~/Views/Entry/Create.cshtml", entryCreateRequest);
             }
 
@@ -161,6 +166,7 @@ namespace Kalorientagebuch.Controllers
             entryCreateRequest.Categories = new SelectList(_context.Categories.ToList(), "Id", "Caption", selectedCategory);
 
             //return View("~/Views/Entry/Create.cshtml", entryCreateRequest);
+            ModelState.Clear();
             return View(entryCreateRequest);
         }
 

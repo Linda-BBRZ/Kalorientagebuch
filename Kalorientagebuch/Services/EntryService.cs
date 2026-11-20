@@ -13,16 +13,27 @@ namespace Kalorientagebuch.Services
             OpenFoodFactsResponse openFoodFactsResponse = callAPI(barcode).Result;
             EntryCreateRequest entryCreateRequest = new EntryCreateRequest();
 
+            //if(openFoodFactsResponse.Product?.Nutriments.)
             var kcal = openFoodFactsResponse.Product?.Nutriments?.EnergyKcalServing;
             
             if(kcal == null)
             {
-                var kcal100g = openFoodFactsResponse.Product?.Nutriments?.EnergyKcal100g;
+                //var kcal100g = openFoodFactsResponse.Product?.Nutriments?.EnergyKcal100g;
+                kcal = openFoodFactsResponse.Product?.Nutriments?.EnergyKcal100g;
+
+                //if (int.TryParse(openFoodFactsResponse.Product?.Quantity.ToString(), out int amount))
+                //{
+                //    kcal = kcal100g * amount;
+                //}
             }
 
             if(int.TryParse(kcal.ToString(), out int calories))
             {
                 entryCreateRequest.CaloriesAmount = calories;
+            }
+            if(kcal is double)
+            {
+                entryCreateRequest.CaloriesAmount = (int)kcal;
             }
             
             entryCreateRequest.Description = string.Join(" ", [openFoodFactsResponse?.Product?.Brands, openFoodFactsResponse?.Product?.ProductNameDe]);
@@ -40,7 +51,7 @@ namespace Kalorientagebuch.Services
         {
             using (var httpClient = new HttpClient())
             {
-                httpClient.DefaultRequestHeaders.UserAgent.TryParseAdd("Kalorientagebuch - C# - <ITN343533@qualifizierung.at>");
+                httpClient.DefaultRequestHeaders.UserAgent.TryParseAdd("Kalorientagebuch - C# - <ITN343533@qualifizierung.at> - " + Guid.NewGuid());
                 var response = await httpClient.GetAsync($"https://de.openfoodfacts.org/api/v2/product/{barcode}");
                 if (response.IsSuccessStatusCode)
                 {

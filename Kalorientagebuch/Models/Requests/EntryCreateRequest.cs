@@ -26,7 +26,7 @@ namespace Kalorientagebuch.Models.Requests
         [Display(Name = "Barcode")]
         public string? Barcode { get; set; }
 
-        public SelectList Categories { get; set; }
+        public SelectList? Categories { get; set; }
 
     }
 }

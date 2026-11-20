@@ -9,7 +9,7 @@
     <form method="post" asp-action="Create" asp-controller="Entry">
         <div>
             <label>Barcode:</label>
-            <input type="text" asp-for="Barcode" value="@Model.Barcode" />
+            <input type="text" asp-for="Barcode" />
             <button class="btn btn-primary" type="submit">Suchen</button>
         </div>
         <table>
@@ -17,7 +17,7 @@
                 <td><label asp-for="Description"></label></td>
                 <td>
                     <!--<input value="@Model.Description">-->
-                    <input asp-for="Description" value="@Model.Description">
+                    <input asp-for="Description">
                     <span asp-validation-for="Description" class="text-danger"></span>
                 </td>
             </tr>
@@ -38,7 +38,7 @@
                 <td><label asp-for="Date"></label></td>
                 <td>
                     <!--<input value="@Model.Date" max="@DateTime.Now.ToString("yyyy-MM-dd")">-->
-                    <input asp-for="Date" value="@Model.Date" max="@DateTime.Now.ToString("yyyy-MM-dd")">
+                    <input asp-for="Date" max="@DateTime.Now.ToString("yyyy-MM-dd")">
                     <span asp-validation-for="Date" class="text-danger"></span>
                 </td>
             </tr>
@@ -46,7 +46,7 @@
                 <td><label asp-for="CaloriesAmount"></label></td>
                 <td>
                     <!--<input type="number" value="@Model.CaloriesAmount">-->
-                    <input asp-for="CaloriesAmount" type="number" value="@Model.CaloriesAmount">
+                    <input asp-for="CaloriesAmount" type="number" >
                     <span asp-validation-for="CaloriesAmount" class="text-danger"></span>
                 </td>
             </tr>
